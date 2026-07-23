@@ -76,7 +76,7 @@ if uploaded_file is not None:
           "Columna: Centro de Costo",
           columnas_disponibles,
           index=(
-              0 if len(columnas_disponibles) > 0 else None
+              0 if len(columnas_disponibles) > 0 else 0
           ),
       )
       col_sucursal = st.selectbox(
@@ -149,7 +149,7 @@ if uploaded_file is not None:
         type="primary",
         use_container_width=True,
     ):
-      # Asegurar tipos numéricos
+      # Asegurar tipos numéricos (Corregido errors='coerce')
       for col in [
           col_salario_bruto,
           col_isss_lab,
@@ -157,7 +157,9 @@ if uploaded_file is not None:
           col_renta,
           col_neto,
       ]:
-        df_planilla[col] = pd.to_numeric(df_planilla[col], errors="fill_value").fillna(0)
+        df_planilla[col] = pd.to_numeric(
+            df_planilla[col], errors="coerce"
+        ).fillna(0)
 
       # Agrupar por Centro de Costo y Sucursal para manejar planillas extensas limpiamente
       agrupado = (
